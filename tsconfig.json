@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+      "outDir": "build",
+      "sourceMap": true,
+      "strict": true,
+      "target": "ES6",
+      "lib": [ "ES6", "DOM" ],
+      "allowJs": true,
+      "module": "commonjs",
+      "declaration": true,
+      "pretty": true,
+      "resolveJsonModule": true
+    },
+    "include": [
+      "src/**/*"
+    ],
+    "exclude": [
+      "node_modules"
+    ]
+  }
+  
