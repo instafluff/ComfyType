@@ -27,6 +27,7 @@ const cli = meow(`
 });
 const comfyPackage = cli.pkg;
 function addScripts(packageJson) {
+    console.info("Adding package.json script commands...");
     // Ensure a scripts section
     if (!packageJson.scripts) {
         packageJson.scripts = {};
@@ -38,6 +39,7 @@ function addScripts(packageJson) {
     packageJson.scripts["lint"] = "eslint . --ext .js,.ts";
 }
 function addDependencies(packageJson) {
+    console.info("Adding package.json dependencies...");
     // Ensure a scripts section
     if (!packageJson.devDependencies) {
         packageJson.devDependencies = {};
@@ -54,7 +56,9 @@ function addDependencies(packageJson) {
     }
 }
 async function saveOrUpdatePackageJson() {
+    console.info("Configuring package.json...");
     if (!fs.existsSync("package.json")) {
+        console.info("package.json does not exist. Creating one in the directory...");
         // run npm init for the user
         const { stdout } = await execa("npm", ["init", "-y"]);
         console.log(stdout);
@@ -65,6 +69,7 @@ async function saveOrUpdatePackageJson() {
     fs.writeFileSync("package.json", JSON.stringify(packageJson, null, "  ") + "\n");
 }
 function saveTsconfigJson() {
+    console.info("Creating tsconfig.json...");
     const tsconfigJson = {
         "compilerOptions": {
             "outDir": "./build",
@@ -90,6 +95,7 @@ function saveTsconfigJson() {
     fs.writeFileSync("tsconfig.json", JSON.stringify(tsconfigJson, null, "\t") + "\n");
 }
 function saveEslintJson() {
+    console.info("Creating .eslintrc.json...");
     const eslintJson = {
         "env": {
             "node": true,
@@ -114,6 +120,7 @@ function saveEslintJson() {
     fs.writeFileSync(".eslintrc.json", JSON.stringify(eslintJson, null, "\t") + "\n");
 }
 function saveEditorConfig() {
+    console.info("Saving .editorconfig...");
     const editorConfig = `root = true
 [*.ts]
 indent_style = tab
@@ -126,6 +133,7 @@ insert_final_newline = true
 }
 function setupFolderStructure() {
     if (!fs.existsSync("./src")) {
+        console.info("/src folder does not exist. Creating project folder structure...");
         fs.mkdirSync("./src");
         fs.writeFileSync("./src/index.ts", `console.log( "Hello Comfy World!" );`);
     }
@@ -135,11 +143,13 @@ switch (cli.input[0] || ComfyTypeCommands.None) {
     case ComfyTypeCommands.Init:
         {
             try {
+                console.info("Configuring TypeScript project in this directory...");
                 await saveOrUpdatePackageJson();
                 saveTsconfigJson();
                 saveEslintJson();
                 saveEditorConfig();
                 setupFolderStructure();
+                console.info("Complete! 'npm start' to build and run");
             }
             catch (error) {
                 console.error(error);
