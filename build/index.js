@@ -60,6 +60,31 @@ function saveOrUpdatePackageJson() {
     addDependencies(packageJson);
     fs.writeFileSync("package.json", JSON.stringify(packageJson, null, "  ") + "\n");
 }
+function saveTsconfigJson() {
+    const tsconfigJson = {
+        "compilerOptions": {
+            "outDir": "./build",
+            "sourceMap": true,
+            "declaration": true,
+            "strict": true,
+            "target": "ES6",
+            "lib": ["ES6", "DOM"],
+            "allowJs": true,
+            "moduleResolution": "node",
+            "esModuleInterop": true,
+            "resolveJsonModule": true,
+            "allowSyntheticDefaultImports": true,
+            "experimentalDecorators": true,
+        },
+        "include": [
+            "./src/**/*",
+        ],
+        "exclude": [
+            "node_modules",
+        ],
+    };
+    fs.writeFileSync("tsconfig.json", JSON.stringify(tsconfigJson, null, "\t") + "\n");
+}
 function saveEslintJson() {
     const eslintJson = {
         "env": {
@@ -93,13 +118,21 @@ end_of_line = lf
 `;
     fs.writeFileSync(".editorconfig", editorConfig);
 }
+function setupFolderStructure() {
+    if (!fs.existsSync("./src")) {
+        fs.mkdirSync("./src");
+        fs.writeFileSync("./src/index.ts", `console.log( "Hello Comfy World!" )`);
+    }
+}
 switch (cli.input[0]) {
     case "init":
         {
             try {
                 saveOrUpdatePackageJson();
+                saveTsconfigJson();
                 saveEslintJson();
                 saveEditorConfig();
+                setupFolderStructure();
             }
             catch (error) {
                 console.error(error);
