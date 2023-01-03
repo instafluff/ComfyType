@@ -33,7 +33,9 @@
     "type",
     "boilerplate",
     "project",
-    "JavaScript"
+    "JavaScript",
+    "node",
+    "node.js"
   ],
   "author": "Instafluff",
   "license": "MIT",
