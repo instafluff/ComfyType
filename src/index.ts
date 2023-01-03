@@ -62,9 +62,8 @@ function addDependencies( packageJson : PackageJson ) {
 async function saveOrUpdatePackageJson() {
 	if( !fs.existsSync( "package.json" ) ) {
 		// run npm init for the user
-		const execProc = execa( "npm", [ "init" ] );
-		execProc.stdout?.pipe( process.stdout );
-		await execProc;
+		const { stdout } = await execa( "npm", [ "init", "-y" ] );
+		console.log( stdout );
 	}
 	const packageJson = JSON.parse( fs.readFileSync( "package.json" ).toString() );
 	addScripts( packageJson );
