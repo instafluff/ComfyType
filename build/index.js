@@ -31,6 +31,7 @@ function addScripts(packageJson) {
     }
     packageJson.scripts["start"] = "npm run build && node build/index.js";
     packageJson.scripts["build"] = "tsc";
+    packageJson.scripts["clean"] = "rimraf ./build/";
     packageJson.scripts["test"] = "jest";
     packageJson.scripts["lint"] = "eslint . --ext .js,.ts";
 }
@@ -45,6 +46,8 @@ function addDependencies(packageJson) {
         packageJson.devDependencies["@typescript-eslint/parser"] = comfyPackage.devDependencies["@typescript-eslint/parser"];
         packageJson.devDependencies["eslint"] = comfyPackage.devDependencies["eslint"];
         packageJson.devDependencies["eslint-config-comfycase"] = comfyPackage.devDependencies["eslint-config-comfycase"];
+        packageJson.devDependencies["jest"] = comfyPackage.devDependencies["jest"];
+        packageJson.devDependencies["rimraf"] = comfyPackage.devDependencies["rimraf"];
         packageJson.devDependencies["typescript"] = comfyPackage.devDependencies["typescript"];
     }
 }
@@ -55,7 +58,7 @@ function saveOrUpdatePackageJson() {
     const packageJson = JSON.parse(fs.readFileSync("package.json").toString());
     addScripts(packageJson);
     addDependencies(packageJson);
-    fs.writeFileSync("package.json", JSON.stringify(packageJson, null, "  "));
+    fs.writeFileSync("package.json", JSON.stringify(packageJson, null, "  ") + "\n");
 }
 function saveEslintJson() {
     const eslintJson = {
@@ -78,7 +81,7 @@ function saveEslintJson() {
             "@typescript-eslint/no-unused-vars": ["warn"],
         },
     };
-    fs.writeFileSync(".eslintrc.json", JSON.stringify(eslintJson, null, "\t"));
+    fs.writeFileSync(".eslintrc.json", JSON.stringify(eslintJson, null, "\t") + "\n");
 }
 function saveEditorConfig() {
     const editorConfig = `root = true
@@ -86,7 +89,8 @@ function saveEditorConfig() {
 indent_style = tab
 indent_size = 4
 charset = utf-8
-end_of_line = lf`;
+end_of_line = lf
+`;
     fs.writeFileSync(".editorconfig", editorConfig);
 }
 switch (cli.input[0]) {

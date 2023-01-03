@@ -35,6 +35,7 @@ function addScripts( packageJson : PackageJson ) {
 
 	packageJson.scripts[ "start" ] = "npm run build && node build/index.js";
 	packageJson.scripts[ "build" ] = "tsc";
+	packageJson.scripts[ "clean" ] = "rimraf ./build/";
 	packageJson.scripts[ "test" ] = "jest";
 	packageJson.scripts[ "lint" ] = "eslint . --ext .js,.ts";
 }
@@ -51,6 +52,8 @@ function addDependencies( packageJson : PackageJson ) {
 		packageJson.devDependencies[ "@typescript-eslint/parser" ] = comfyPackage.devDependencies[ "@typescript-eslint/parser" ] as string;
 		packageJson.devDependencies[ "eslint" ] = comfyPackage.devDependencies[ "eslint" ] as string;
 		packageJson.devDependencies[ "eslint-config-comfycase" ] = comfyPackage.devDependencies[ "eslint-config-comfycase" ] as string;
+		packageJson.devDependencies[ "jest" ] = comfyPackage.devDependencies[ "jest" ] as string;
+		packageJson.devDependencies[ "rimraf" ] = comfyPackage.devDependencies[ "rimraf" ] as string;
 		packageJson.devDependencies[ "typescript" ] = comfyPackage.devDependencies[ "typescript" ] as string;
 	}
 }
@@ -62,7 +65,7 @@ function saveOrUpdatePackageJson() {
 	const packageJson = JSON.parse( fs.readFileSync( "package.json" ).toString() );
 	addScripts( packageJson );
 	addDependencies( packageJson );
-	fs.writeFileSync( "package.json", JSON.stringify( packageJson, null, "  " ) );
+	fs.writeFileSync( "package.json", JSON.stringify( packageJson, null, "  " ) + "\n" );
 }
 
 function saveEslintJson() {
@@ -87,7 +90,7 @@ function saveEslintJson() {
 		},
 	};
 
-	fs.writeFileSync( ".eslintrc.json", JSON.stringify( eslintJson, null, "\t" ) );
+	fs.writeFileSync( ".eslintrc.json", JSON.stringify( eslintJson, null, "\t" ) + "\n" );
 }
 
 function saveEditorConfig() {
@@ -97,7 +100,8 @@ function saveEditorConfig() {
 indent_style = tab
 indent_size = 4
 charset = utf-8
-end_of_line = lf`;
+end_of_line = lf
+`;
 
 	fs.writeFileSync( ".editorconfig", editorConfig );
 }
