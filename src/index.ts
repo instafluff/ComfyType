@@ -59,10 +59,12 @@ function addDependencies( packageJson : PackageJson ) {
 	}
 }
 
-function saveOrUpdatePackageJson() {
+async function saveOrUpdatePackageJson() {
 	if( !fs.existsSync( "package.json" ) ) {
 		// run npm init for the user
-		execa( "npm", [ "init" ] ).stdout?.pipe( process.stdout );
+		const execProc = execa( "npm", [ "init" ] );
+		execProc.stdout?.pipe( process.stdout );
+		await execProc;
 	}
 	const packageJson = JSON.parse( fs.readFileSync( "package.json" ).toString() );
 	addScripts( packageJson );
@@ -100,6 +102,7 @@ function saveTsconfigJson() {
 function saveEslintJson() {
 	const eslintJson = {
 		"env": {
+			"node": true,
 			"browser": true,
 			"commonjs": true,
 			"es2021": true,
@@ -130,6 +133,7 @@ indent_style = tab
 indent_size = 4
 charset = utf-8
 end_of_line = lf
+insert_final_newline = true
 `;
 
 	fs.writeFileSync( ".editorconfig", editorConfig );
@@ -146,7 +150,7 @@ switch( cli.input[ 0 ] as ComfyTypeCommands ) {
 case "init":
 	{
 		try {
-			saveOrUpdatePackageJson();
+			await saveOrUpdatePackageJson();
 			saveTsconfigJson();
 			saveEslintJson();
 			saveEditorConfig();
