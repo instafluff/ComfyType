@@ -1,7 +1,7 @@
 ![npm](https://img.shields.io/npm/v/comfytype?style=flat-square) ![GitHub](https://img.shields.io/github/license/instafluff/comfytype?style=flat-square) [![](https://data.jsdelivr.com/v1/package/npm/comfytype/badge)](https://www.jsdelivr.com/package/npm/comfytype)
 
 # ComfyType
-Comfiest TypeScript Style Boilerplate
+Comfiest way to start a TypeScript project!
 
 `npx comfytype`
 
