@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import meow from "meow";
 import * as fs from "fs";
+import { execa } from "execa";
 export var ComfyTypeCommands;
 (function (ComfyTypeCommands) {
     ComfyTypeCommands["Init"] = "init";
@@ -53,7 +54,8 @@ function addDependencies(packageJson) {
 }
 function saveOrUpdatePackageJson() {
     if (!fs.existsSync("package.json")) {
-        // TODO: run npm init
+        // run npm init for the user
+        execa("npm", ["init"]).stdout?.pipe(process.stdout);
     }
     const packageJson = JSON.parse(fs.readFileSync("package.json").toString());
     addScripts(packageJson);
@@ -121,7 +123,7 @@ end_of_line = lf
 function setupFolderStructure() {
     if (!fs.existsSync("./src")) {
         fs.mkdirSync("./src");
-        fs.writeFileSync("./src/index.ts", `console.log( "Hello Comfy World!" )`);
+        fs.writeFileSync("./src/index.ts", `console.log( "Hello Comfy World!" );`);
     }
 }
 switch (cli.input[0]) {
