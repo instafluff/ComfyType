@@ -5,6 +5,7 @@ import { execa } from "execa";
 import { PackageJson } from "@npm/types";
 
 export enum ComfyTypeCommands {
+	None = "",
 	Init = "init",
 };
 
@@ -145,8 +146,9 @@ function setupFolderStructure() {
 	}
 }
 
-switch( cli.input[ 0 ] as ComfyTypeCommands ) {
-case "init":
+switch( cli.input[ 0 ] as ComfyTypeCommands || ComfyTypeCommands.None ) {
+case ComfyTypeCommands.None:
+case ComfyTypeCommands.Init:
 	{
 		try {
 			await saveOrUpdatePackageJson();

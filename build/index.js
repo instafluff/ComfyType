@@ -4,6 +4,7 @@ import * as fs from "fs";
 import { execa } from "execa";
 export var ComfyTypeCommands;
 (function (ComfyTypeCommands) {
+    ComfyTypeCommands["None"] = "";
     ComfyTypeCommands["Init"] = "init";
 })(ComfyTypeCommands || (ComfyTypeCommands = {}));
 ;
@@ -129,8 +130,9 @@ function setupFolderStructure() {
         fs.writeFileSync("./src/index.ts", `console.log( "Hello Comfy World!" );`);
     }
 }
-switch (cli.input[0]) {
-    case "init":
+switch (cli.input[0] || ComfyTypeCommands.None) {
+    case ComfyTypeCommands.None:
+    case ComfyTypeCommands.Init:
         {
             try {
                 await saveOrUpdatePackageJson();
