@@ -89,6 +89,7 @@ function saveTsconfigJson() {
 			"strict": true,
 			"target": "ES6",
 			"lib": [ "ES6", "DOM" ],
+			"module": "CommonJS",
 			"allowJs": true,
 			"moduleResolution": "node",
 			"esModuleInterop": true,
