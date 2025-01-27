@@ -194,7 +194,7 @@ case ComfyTypeCommands.Init:
 			createEslintConfig();
 			saveEditorConfig();
 			setupFolderStructure();
-			console.info( "Complete! 'npm start' to build and run" );
+			console.info( "Complete! 'npm install' and then 'npm start' to build and run" );
 		}
 		catch( error ) {
 			console.error( error );
