@@ -330,6 +330,25 @@ async function ensureSourceLayout() {
 	}
 }
 
+async function ensureGitignore() {
+	const gitignorePath = ".gitignore";
+	const buildPatterns = new Set( [ "/build", "build/", "build" ] );
+
+	if( await fileExists( gitignorePath ) ) {
+		const current = await readFile( gitignorePath, "utf8" );
+		const lines = current.split( /\r?\n/ ).map( ( line ) => line.trim() );
+		const hasBuildIgnore = lines.some( ( line ) => buildPatterns.has( line ) );
+		if( hasBuildIgnore ) {
+			return;
+		}
+		const suffix = current.endsWith( "\n" ) ? "" : "\n";
+		await writeFile( gitignorePath, `${ current }${ suffix }/build\n` );
+		return;
+	}
+
+	await writeFile( gitignorePath, "node_modules/\n/build\n" );
+}
+
 async function configureProject( command : ComfyTypeCommands, preference : ModulePreference ) {
 	switch( command ) {
 	case ComfyTypeCommands.None:
@@ -346,6 +365,7 @@ async function configureProject( command : ComfyTypeCommands, preference : Modul
 			await writeTsconfigJson( moduleScheme );
 			await writeEslintConfig( moduleScheme );
 			await writeEditorConfig();
+			await ensureGitignore();
 			await ensureSourceLayout();
 			console.info( "Complete! 'npm install' and then 'npm start' to build and run" );
 		}
