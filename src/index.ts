@@ -381,7 +381,7 @@ try {
 	const modulePreference = normalizeModulePreference( cli.flags.module );
 	await configureProject( command, modulePreference );
 }
-catch( error ) {
+catch ( error ) {
 	console.error( error instanceof Error ? error.message : error );
 	process.exitCode = 1;
 }
